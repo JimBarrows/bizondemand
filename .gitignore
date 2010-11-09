@@ -3,6 +3,7 @@
 *.class
 .classpath
 .CVS
+*.db
 derby.log
 dist
 *.ear
