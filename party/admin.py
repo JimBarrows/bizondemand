@@ -2,13 +2,13 @@ from party.models import Person, Organization, PartyClassification, PartyType, P
 from django.contrib import admin
 
 
-class PartyClassificationInline(admin.StackedInline):
+class PartyClassificationInline(admin.TabularInline):
 	model=PartyClassification
-	extra=3
+	extra=1
 
-class PartyRoleInLine(admin.StackedInline):
+class PartyRoleInLine(admin.TabularInline):
 	model=PartyRole
-	extra=3
+	extra=1
 
 class PartyRoleTypeInLine(admin.TabularInline):
 	model=PartyRoleType
