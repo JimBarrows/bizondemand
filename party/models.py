@@ -19,7 +19,7 @@ class Organization( Party):
 class PartyType(models.Model):
 	description = models.CharField(max_length=250)
 	descriptionFor = models.ManyToManyField( Party, through='PartyClassification')
-	subRoles = models.ForeignKey('self')
+	parent = models.ForeignKey('self', blank = True, null = True, related_name='child_set')
 	def __unicode__(self):
 		return self.description
 

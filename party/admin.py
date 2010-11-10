@@ -14,13 +14,20 @@ class PartyRoleTypeInLine(admin.TabularInline):
 	model=PartyRoleType
 	extra=1
 
+class PartyTypeInLine(admin.TabularInline):
+	model=PartyType
+	extra=1
+
 class PartyAdmin(admin.ModelAdmin):
 	inlines=[PartyClassificationInline, PartyRoleInLine]
 
 class PartyRoleTypeAdmin(admin.ModelAdmin):
 	inlines=[ PartyRoleTypeInLine]
 
+class PartyTypeAdmin(admin.ModelAdmin):
+	inlines=[ PartyTypeInLine]
+
 admin.site.register(Person, PartyAdmin)
 admin.site.register(Organization, PartyAdmin)
-admin.site.register(PartyType)
+admin.site.register(PartyType, PartyTypeAdmin)
 admin.site.register(PartyRoleType, PartyRoleTypeAdmin)
