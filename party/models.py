@@ -19,6 +19,7 @@ class Organization( Party):
 class PartyType(models.Model):
 	description = models.CharField(max_length=250)
 	descriptionFor = models.ManyToManyField( Party, through='PartyClassification')
+	subRoles = models.ForeignKey('self')
 	def __unicode__(self):
 		return self.description
 
@@ -28,13 +29,12 @@ class PartyClassification(models.Model):
 	fromDate = models.DateField()
 	thruDate = models.DateField(blank = True, null = True)
 
-class RoleType( models.Model):
+class PartyRoleType( models.Model):
 	description = models.CharField(max_length=250)
+	parent = models.ForeignKey('self', blank = True, null = True, related_name='child_set')
+	descriptionFor = models.ManyToManyField( Party, through='PartyRole')
 	def __unicode__(self):
 		return self.description
-
-class PartyRoleType( RoleType):
-	descriptionFor = models.ManyToManyField( Party, through='PartyRole')
 
 class PartyRole(models.Model):
 	party = models.ForeignKey(Party)
