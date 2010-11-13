@@ -2,7 +2,7 @@ from django.db import models
 
 class Party(models.Model):
 	def __unicode__(self):
-		return self.id
+		return 'Party'
 
 	class Meta:
 		app_label = 'party'

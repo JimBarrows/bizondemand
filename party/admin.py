@@ -51,8 +51,16 @@ class PartyPostalAddressInLine(admin.TabularInline):
 	model=PartyPostalAddress
 	extra=1
 
+class PartyContactMechanismInLine(admin.TabularInline):
+	model=PartyContactMechanism
+	extra=1
+
+class PartyContactMechanismPurposeInLine(admin.TabularInline):
+	model=PartyContactMechanismPurpose
+	extra=1
+
 class PartyAdmin(admin.ModelAdmin):
-	inlines=[PartyClassificationInline, PartyRoleInLine, PartyPostalAddressInLine ]
+	inlines=[PartyClassificationInline, PartyRoleInLine, PartyContactMechanismInLine ]
 
 class PartyRoleTypeAdmin(admin.ModelAdmin):
 	inlines=[ PartyRoleTypeInLine]
@@ -78,6 +86,9 @@ class PostalAddressAdmin(admin.ModelAdmin):
 class PartyRelationshipAdmin(admin.ModelAdmin):
 	inlines=[ CommunicationEventInLine]
 
+class PartyContactMechanismAdmin(admin.ModelAdmin):
+	inlines=[ PartyContactMechanismPurposeInLine]
+
 admin.site.register(Person, PartyAdmin)
 admin.site.register(Organization, PartyAdmin)
 admin.site.register(PartyType, PartyTypeAdmin)
@@ -91,3 +102,9 @@ admin.site.register(GeographicBoundary, GeographicBoundaryAdmin )
 admin.site.register(GeographicBoundaryAssociation)
 admin.site.register(PostalAddress, PostalAddressAdmin)
 admin.site.register(PostalAddressBoundary)
+admin.site.register(ContactMechanismPurposeType )
+admin.site.register(PartyContactMechanism, PartyContactMechanismAdmin )
+admin.site.register(EmailAddress )
+admin.site.register(IpAddress )
+admin.site.register(UrlAddress )
+admin.site.register(PhoneNumber )
