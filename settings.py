@@ -1,4 +1,4 @@
-# Django settings for mybusiness project.
+# Django settings for bizondemand project.
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -12,7 +12,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'mybusiness.db',                      # Or path to database file if using sqlite3.
+        'NAME': 'bizondemand.db',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -45,7 +45,7 @@ USE_L10N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = '/home/jimbarrows/Desktop/mybusiness/templates'
+MEDIA_ROOT = '/home/jimbarrows/Desktop/bizondemand/templates'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -75,16 +75,16 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
 )
 
-ROOT_URLCONF = 'mybusiness.urls'
+ROOT_URLCONF = 'bizondemand.urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-		'/home/jimbarrows/Desktop/mybusiness/templates',
-		'/home/jimbarrows/Desktop/mybusiness/css',
-		'/home/jimbarrows/Desktop/mybusiness/js',
-		'/home/jimbarrows/Desktop/mybusiness/img'
+		'/home/jimbarrows/Desktop/bizondemand/templates',
+		'/home/jimbarrows/Desktop/bizondemand/css',
+		'/home/jimbarrows/Desktop/bizondemand/js',
+		'/home/jimbarrows/Desktop/bizondemand/img'
 )
 
 INSTALLED_APPS = (
@@ -97,5 +97,5 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
-    'mybusiness.party'
+    'bizondemand.party'
 )
