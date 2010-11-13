@@ -59,6 +59,22 @@ class PartyContactMechanismPurposeInLine(admin.TabularInline):
 	model=PartyContactMechanismPurpose
 	extra=1
 
+class FacilityInLine(admin.TabularInline):
+	model=Facility
+	extra=1
+
+class FacilityRoleInLine(admin.TabularInline):
+	model=FacilityRole
+	extra=1
+
+class FacilityTypeInLine(admin.TabularInline):
+	model=FacilityType
+	extra=1
+
+class FacilityContactMechanismInLine(admin.TabularInline):
+	model=FacilityContactMechanism
+	extra=1
+
 class PartyAdmin(admin.ModelAdmin):
 	inlines=[PartyClassificationInline, PartyRoleInLine, PartyContactMechanismInLine ]
 
@@ -89,6 +105,12 @@ class PartyRelationshipAdmin(admin.ModelAdmin):
 class PartyContactMechanismAdmin(admin.ModelAdmin):
 	inlines=[ PartyContactMechanismPurposeInLine]
 
+class FacilityAdmin(admin.ModelAdmin):
+	inlines=[ FacilityInLine, FacilityRoleInLine, FacilityContactMechanismInLine]
+
+class FacilityTypeAdmin(admin.ModelAdmin):
+	inlines=[ FacilityTypeInLine]
+
 admin.site.register(Person, PartyAdmin)
 admin.site.register(Organization, PartyAdmin)
 admin.site.register(PartyType, PartyTypeAdmin)
@@ -108,3 +130,6 @@ admin.site.register(EmailAddress )
 admin.site.register(IpAddress )
 admin.site.register(UrlAddress )
 admin.site.register(PhoneNumber )
+admin.site.register(FacilityType, FacilityTypeAdmin )
+admin.site.register(FacilityRoleType )
+admin.site.register(Facility, FacilityAdmin )
