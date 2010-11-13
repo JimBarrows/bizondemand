@@ -4,17 +4,24 @@ class Party(models.Model):
 	def __unicode__(self):
 		return self.id
 
+	class Meta:
+		app_label = 'party'
+
 class Person( Party):
 	firstName=models.CharField(max_length=128)
 	middleName = models.CharField(max_length=128, blank=True, null = True)
 	lastName = models.CharField(max_length=128)
 	def __unicode__(self):
 		return self.firstName + ' ' + self.middleName + ' '+ self.lastName
+	class Meta:
+		app_label = 'party'
 
 class Organization( Party):
 	name=models.CharField(max_length=128)
 	def __unicode__(self):
 		return self.name
+	class Meta:
+		app_label = 'party'
 
 class PartyType(models.Model):
 	description = models.CharField(max_length=250)
@@ -22,6 +29,8 @@ class PartyType(models.Model):
 	parent = models.ForeignKey('self', blank = True, null = True, related_name='child_set')
 	def __unicode__(self):
 		return self.description
+	class Meta:
+		app_label = 'party'
 
 class PartyClassification(models.Model):
 	party = models.ForeignKey(Party)
@@ -30,6 +39,8 @@ class PartyClassification(models.Model):
 	thruDate = models.DateField(blank = True, null = True)
 	def __unicode__(self):
 		return self.partyType.description
+	class Meta:
+		app_label = 'party'
 
 class PartyRoleType( models.Model):
 	description = models.CharField(max_length=250)
@@ -37,6 +48,8 @@ class PartyRoleType( models.Model):
 	descriptionFor = models.ManyToManyField( Party, through='PartyRole')
 	def __unicode__(self):
 		return self.description
+	class Meta:
+		app_label = 'party'
 
 class PartyRole(models.Model):
 	party = models.ForeignKey(Party)
@@ -45,6 +58,8 @@ class PartyRole(models.Model):
 	thruDate = models.DateField(blank = True, null = True)
 	def __unicode__(self):
 		return self.partyRoleType.description
+	class Meta:
+		app_label = 'party'
 
 class PartyRelationshipType(models.Model):
 	name = models.CharField(max_length=250)
@@ -54,6 +69,8 @@ class PartyRelationshipType(models.Model):
 	toRoleType = models.ForeignKey(PartyRoleType, related_name='to_role_type_set')
 	def __unicode__(self):
 		return self.name
+	class Meta:
+		app_label = 'party'
 
 class PartyRelationship(models.Model):
 	comment = models.TextField()
@@ -66,6 +83,8 @@ class PartyRelationship(models.Model):
 	status = models.ForeignKey('StatusType', blank=True, null = True)
 	def __unicode__(self):
 		return self.comment
+	class Meta:
+		app_label = 'party'
 
 class PartyPostalAddress(models.Model):
 	party = models.ForeignKey(Party)
@@ -75,6 +94,8 @@ class PartyPostalAddress(models.Model):
 	location = models.ForeignKey('PostalAddress')
 	def __unicode__(self):
 		return self.location.street1
+	class Meta:
+		app_label = 'party'
 
 class CommunicationEvent(models.Model):
 	started = models.DateTimeField()
@@ -83,47 +104,21 @@ class CommunicationEvent(models.Model):
 	relationship = models.ForeignKey(PartyRelationship)
 	def __unicode__(self):
 		return self.note
+	class Meta:
+		app_label = 'party'
 
 class PriorityType(models.Model):
 	description = models.CharField(max_length=250)
 	def __unicode__(self):
 		return self.description
+	class Meta:
+		app_label = 'party'
 
 class StatusType(models.Model):
 	description = models.CharField(max_length=250)
 	def __unicode__(self):
 		return self.description
-
-class GeographicBoundaryType(models.Model):
-	description = models.CharField(max_length=250, blank = True, null = True)
-	def __unicode__(self):
-		return self.description
-
-class GeographicBoundary(models.Model):
-	name = models.CharField(max_length=250, blank = True, null = True)
-	abbrev = models.CharField(max_length=10, blank = True, null = True)
-	geocode = models.CharField(max_length=250, blank = True, null = True)
-	geographicBoundaryType = models.ForeignKey(GeographicBoundaryType)
-	def __unicode__(self):
-		return self.name
-
-class GeographicBoundaryAssociation(models.Model):
-	contains = models.ForeignKey(GeographicBoundary, related_name='contains_set')
-	containedBy = models.ForeignKey(GeographicBoundary, related_name='containedBy_set')
-	def __unicode__(self):
-		return self.containedBy.name + " - " + self.contains.name 
-
-class PostalAddress(models.Model):
-	street1 = models.CharField(max_length=250, )
-	street2 = models.CharField(max_length=250, blank = True, null = True)
-	directions = models.TextField( blank = True, null = True)
-	def __unicode__(self):
-		return self.street1
-	
-class PostalAddressBoundary(models.Model):
-	specifiedFor = models.ForeignKey(PostalAddress, related_name='specifiedFor')
-	inBoundary = models.ForeignKey(GeographicBoundary, related_name='inBoundary')
-	def __unicode__(self):
-		return self.specifiedFor.street1 + " - " + self.inBoundary.name
-	
-
+	class Meta:
+		app_label = 'party'
+	class Meta:
+		app_label = 'party'
