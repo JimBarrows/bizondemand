@@ -75,6 +75,14 @@ class FacilityContactMechanismInLine(admin.TabularInline):
 	model=FacilityContactMechanism
 	extra=1
 
+class CommunicationEventPurposeInLine(admin.TabularInline):
+	model=CommunicationEventPurpose
+	extra=1
+
+class CommunicationEventRoleInLine(admin.TabularInline):
+	model=CommunicationEventRole
+	extra=1
+
 class PartyAdmin(admin.ModelAdmin):
 	inlines=[PartyClassificationInline, PartyRoleInLine, PartyContactMechanismInLine ]
 
@@ -111,6 +119,9 @@ class FacilityAdmin(admin.ModelAdmin):
 class FacilityTypeAdmin(admin.ModelAdmin):
 	inlines=[ FacilityTypeInLine]
 
+class CommunicationEventAdmin(admin.ModelAdmin):
+	inlines=[ CommunicationEventPurposeInLine,CommunicationEventRoleInLine]
+
 admin.site.register(Person, PartyAdmin)
 admin.site.register(Organization, PartyAdmin)
 admin.site.register(PartyType, PartyTypeAdmin)
@@ -133,3 +144,7 @@ admin.site.register(PhoneNumber )
 admin.site.register(FacilityType, FacilityTypeAdmin )
 admin.site.register(FacilityRoleType )
 admin.site.register(Facility, FacilityAdmin )
+admin.site.register(CommunicationEventType )
+admin.site.register(CommunicationEventStatusType )
+admin.site.register(CommunicationEventPurposeType )
+admin.site.register(CommunicationEvent, CommunicationEventAdmin)

@@ -97,16 +97,6 @@ class PartyPostalAddress(models.Model):
 	class Meta:
 		app_label = 'party'
 
-class CommunicationEvent(models.Model):
-	started = models.DateTimeField()
-	ended = models.DateTimeField()
-	note = models.TextField()
-	relationship = models.ForeignKey(PartyRelationship)
-	def __unicode__(self):
-		return self.note
-	class Meta:
-		app_label = 'party'
-
 class PriorityType(models.Model):
 	description = models.CharField(max_length=250)
 	def __unicode__(self):
