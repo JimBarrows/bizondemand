@@ -83,6 +83,10 @@ class CommunicationEventRoleInLine(admin.TabularInline):
 	model=CommunicationEventRole
 	extra=1
 
+class KaseRoleInLine(admin.TabularInline):
+	model=KaseRole
+	extra=1
+
 class PartyAdmin(admin.ModelAdmin):
 	inlines=[PartyClassificationInline, PartyRoleInLine, PartyContactMechanismInLine ]
 
@@ -122,6 +126,9 @@ class FacilityTypeAdmin(admin.ModelAdmin):
 class CommunicationEventAdmin(admin.ModelAdmin):
 	inlines=[ CommunicationEventPurposeInLine,CommunicationEventRoleInLine]
 
+class KaseAdmin(admin.ModelAdmin):
+	inlines=[ KaseRoleInLine]
+
 admin.site.register(Person, PartyAdmin)
 admin.site.register(Organization, PartyAdmin)
 admin.site.register(PartyType, PartyTypeAdmin)
@@ -148,3 +155,5 @@ admin.site.register(CommunicationEventType )
 admin.site.register(CommunicationEventStatusType )
 admin.site.register(CommunicationEventPurposeType )
 admin.site.register(CommunicationEvent, CommunicationEventAdmin)
+admin.site.register(KaseRoleType )
+admin.site.register(Kase, KaseAdmin )
