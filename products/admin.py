@@ -8,8 +8,12 @@ class ProductCategoryInLine(admin.TabularInline):
 class ServiceAdmin( admin.ModelAdmin):
 	inlines=[ ProductCategoryInLine]
 
+class IdentificationInLine(admin.TabularInline):
+	model=Identification
+	extra=1
+
 class GoodAdmin( admin.ModelAdmin):
-	inlines=[ ProductCategoryInLine]
+	inlines=[ ProductCategoryInLine, IdentificationInLine]
 
 class MarketInterestInLine(admin.TabularInline):
 	model=MarketInterest
@@ -25,3 +29,4 @@ class ProductCategoryTypeAdmin( admin.ModelAdmin):
 admin.site.register( Service, ServiceAdmin)
 admin.site.register( Good, GoodAdmin )
 admin.site.register( ProductCategoryType, ProductCategoryTypeAdmin )
+admin.site.register( IdentificationType )

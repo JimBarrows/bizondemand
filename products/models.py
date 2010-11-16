@@ -12,6 +12,7 @@ class Product(models.Model):
 		return self.name
 
 class Good(Product):
+	identifiers = models.ManyToManyField( 'IdentificationType', through='Identification')
 	def __unicode__(self):
 		return self.name
 
@@ -41,3 +42,18 @@ class MarketInterest( models.Model ):
 	thruDate = models.DateField(blank = True, null = True)
 	def __unicode__(self):
 		return self.partyType.description
+
+class IdentificationType(models.Model):
+	description = models.CharField(max_length=250)
+	def __unicode__(self):
+		return self.description
+
+class Identification( models.Model ):
+	value = models.CharField(max_length=250)
+	good = models.ForeignKey(Good)
+	kind = models.ForeignKey('IdentificationType')
+	fromDate = models.DateField()
+	thruDate = models.DateField(blank = True, null = True)
+	def __unicode__(self):
+		return self.partyType.description
+
