@@ -2,6 +2,7 @@ from django.db import models
 from polymorphic import PolymorphicModel
 from party.models import PartyType
 from datetime import datetime
+from party.models import Organization, Facility, PartyRole, GeographicBoundary
 
 class Product(PolymorphicModel):
 	name = models.CharField(max_length=128)
@@ -10,6 +11,8 @@ class Product(PolymorphicModel):
 	supportDiscontinuationDate = models.DateField(blank=True, null=True)
 	comment = models.TextField(blank=True, null=True)
 	categories = models.ManyToManyField( 'CategoryType', through='Category')
+	manufacturedBy = models.ForeignKey(Organization, related_name='producerOf_set')
+	suppliedThru = models.ManyToManyField( Organization, through='SupplierProduct')
 	def __unicode__(self):
 		return self.name
 
@@ -21,7 +24,35 @@ class Good(Product):
 class Service(Product):
 	def __unicode__(self):
 		return self.name
+
+class ReorderGuideline( models.Model):
+	guidelineFor = models.ForeignKey('Good')
+	fromDate = models.DateField(default = datetime.today())
+	thruDate = models.DateField(blank=True, null=True)
+	reorderQuantity = models.IntegerField()
+	reorderLevel = models.IntegerField()
+	boundary = models.ForeignKey(GeographicBoundary)
+	facility = models.ForeignKey(Facility)
+	internalOrganization = models.ForeignKey(PartyRole, limit_choices_to={'partyRoleType__description':'Internal Organization'})
 	
+
+class SupplierProduct( models.Model):
+	availableFrom = models.DateField(default = datetime.today())
+	availableThru = models.DateField(blank=True, null=True)
+	standardLeadTimeInDays = models.IntegerField(blank=True, null=True)
+	product = models.ForeignKey('Product')
+	organization = models.ForeignKey(Organization)
+	preference = models.ForeignKey('PreferenceType')
+	rating = models.ForeignKey('RatingType')
+	def __unicode__(self):
+		return self.Organization.name
+
+class PreferenceType( models.Model):
+	description = models.CharField(max_length=250)
+
+class RatingType( models.Model):
+	description = models.CharField(max_length=250)
+
 class Identification( models.Model ):
 	value = models.CharField(max_length=250)
 	good = models.ForeignKey(Good)

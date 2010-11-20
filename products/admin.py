@@ -36,11 +36,19 @@ class UnitOfMeasureConversionInLine(admin.TabularInline):
 	extra=1
 	fk_name='convertFrom'
 
+class SupplierProductInLine(admin.TabularInline):
+	model=SupplierProduct
+	extra=1
+
+class ReorderGuidelineInLine(admin.TabularInline):
+	model=ReorderGuideline
+	extra=1
+
 class ServiceAdmin( admin.ModelAdmin):
-	inlines=[ CategoryInLine, FeatureApplicabilityInLine]
+	inlines=[ CategoryInLine, FeatureApplicabilityInLine, SupplierProductInLine]
 
 class GoodAdmin( admin.ModelAdmin):
-	inlines=[ CategoryInLine, IdentificationInLine,FeatureApplicabilityInLine  ]
+	inlines=[ CategoryInLine, IdentificationInLine,FeatureApplicabilityInLine, SupplierProductInLine, ReorderGuidelineInLine  ]
 
 class CategoryTypeAdmin( admin.ModelAdmin):
 	inlines=[ MarketInterestInLine, CategoryTypeInLine]
