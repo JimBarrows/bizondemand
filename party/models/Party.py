@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime
+from common.models import DateRange
 
 class Party(models.Model):
 	def __unicode__(self):

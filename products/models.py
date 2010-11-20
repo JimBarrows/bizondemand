@@ -1,7 +1,9 @@
 from django.db import models
+from polymorphic import PolymorphicModel
 from party.models import PartyType
+from datetime import datetime
 
-class Product(models.Model):
+class Product(PolymorphicModel):
 	name = models.CharField(max_length=128)
 	introductionDate = models.DateField(blank=True, null=True)
 	salesDiscontinuationDate = models.DateField(blank=True, null=True)
@@ -20,13 +22,45 @@ class Service(Product):
 	def __unicode__(self):
 		return self.name
 	
-class ProductCategory( models.Model ):
-	product = models.ForeignKey(Product)
-	categoryType = models.ForeignKey('ProductCategoryType')
-	fromDate = models.DateField()
+class Identification( models.Model ):
+	value = models.CharField(max_length=250)
+	good = models.ForeignKey(Good)
+	kind = models.ForeignKey('IdentificationType')
+	fromDate = models.DateField(default = datetime.today())
 	thruDate = models.DateField(blank = True, null = True)
 	def __unicode__(self):
 		return self.partyType.description
+
+class ProductCategory( models.Model ):
+	product = models.ForeignKey(Product)
+	categoryType = models.ForeignKey('ProductCategoryType')
+	fromDate = models.DateField(default = datetime.today())
+	thruDate = models.DateField(blank = True, null = True)
+	def __unicode__(self):
+		return self.categoryType.description
+
+class ProductFeature( models.Model ):
+	description = models.CharField(max_length=250)
+	kind = models.ForeignKey('ProductFeatureType')
+	category = models.ForeignKey('ProductFeatureCategory')
+	product = models.ManyToManyField('Product', through='ProductFeatureApplicability')
+	def __unicode__(self):
+		return self.description
+
+class ProductFeatureApplicability( models.Model) :
+	fromDate = models.DateField(default = datetime.today())
+	thruDate = models.DateField(blank = True, null = True)
+	product = models.ForeignKey('Product')
+	feature = models.ForeignKey('ProductFeature' )
+	def __unicode__(self):
+		return self.feature.description
+
+class ProductFeatureInteraction( models.Model ):
+	incompatibility = models.BooleanField()
+	interactionDependancy = models.BooleanField()
+	of = models.ForeignKey('ProductFeature', related_name='of_set')
+	factorIn = models.ForeignKey('ProductFeature', related_name='factorIn_set')
+	contextOf = models.ForeignKey('Product')
 
 class ProductCategoryType(models.Model):
 	description = models.CharField(max_length=250)
@@ -38,7 +72,7 @@ class ProductCategoryType(models.Model):
 class MarketInterest( models.Model ):
 	partyType = models.ForeignKey(PartyType)
 	categoryType = models.ForeignKey(ProductCategoryType)
-	fromDate = models.DateField()
+	fromDate = models.DateField(default = datetime.today())
 	thruDate = models.DateField(blank = True, null = True)
 	def __unicode__(self):
 		return self.partyType.description
@@ -48,12 +82,12 @@ class IdentificationType(models.Model):
 	def __unicode__(self):
 		return self.description
 
-class Identification( models.Model ):
-	value = models.CharField(max_length=250)
-	good = models.ForeignKey(Good)
-	kind = models.ForeignKey('IdentificationType')
-	fromDate = models.DateField()
-	thruDate = models.DateField(blank = True, null = True)
+class ProductFeatureType( models.Model):
+	description = models.CharField(max_length=250)
 	def __unicode__(self):
-		return self.partyType.description
+		return self.description
 
+class ProductFeatureCategory( models.Model):
+	description = models.CharField(max_length=250)
+	def __unicode__(self):
+		return self.description
