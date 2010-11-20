@@ -39,19 +39,44 @@ class Category( models.Model ):
 	def __unicode__(self):
 		return self.categoryType.description
 
-class Feature( models.Model ):
+class Feature( PolymorphicModel ):
 	description = models.CharField(max_length=250)
-	kind = models.ForeignKey('FeatureType')
 	category = models.ForeignKey('FeatureCategory')
 	product = models.ManyToManyField('Product', through='FeatureApplicability')
 	def __unicode__(self):
 		return self.description
 
+class Dimension( Feature ) :
+	numberSpecified =models.IntegerField()
+	measuredUsing = models.ForeignKey('UnitOfMeasure')
+	def __unicode__(self):
+		return '{0} {1}'.format( self.numberSpecified, self.measuredUsing.abbreviation)
+
+class UnitOfMeasure( models.Model):
+	abbreviation = models.CharField(max_length=15)
+	description = models.CharField(max_length=100)
+	def __unicode__(self):
+		return self.abbreviation 
+
+class UnitOfMeasureConversion( models.Model):
+	convertFrom = models.ForeignKey('UnitOfMeasure', related_name='convertFrom_set')
+	convertTo = models.ForeignKey('UnitOfMeasure', related_name='convertInto_set')
+	conversionFactor = models.DecimalField( max_digits=5, decimal_places=3)
+	def __unicode__(self):
+		return '{0} * {1} = {2}'.format( self.convertFrom.abbreviation, self.conversionFactor, self.convertTo.abbreviation)
+
 class FeatureApplicability( models.Model) :
+	ApplicabilityChoices = (
+		('Required' , 'Required'),
+		('Standard' , 'Standard'),
+		('Optional' , 'Optional'),
+		('Selectable' , 'Selectable')
+		)
 	fromDate = models.DateField(default = datetime.today())
 	thruDate = models.DateField(blank = True, null = True)
 	product = models.ForeignKey('Product')
 	feature = models.ForeignKey('Feature' )
+	kind = models.CharField(max_length=10, choices=ApplicabilityChoices)
 	def __unicode__(self):
 		return self.feature.description
 
@@ -78,11 +103,6 @@ class MarketInterest( models.Model ):
 		return self.partyType.description
 
 class IdentificationType(models.Model):
-	description = models.CharField(max_length=250)
-	def __unicode__(self):
-		return self.description
-
-class FeatureType( models.Model):
 	description = models.CharField(max_length=250)
 	def __unicode__(self):
 		return self.description

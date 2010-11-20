@@ -31,6 +31,11 @@ class CategoryTypeInLine(admin.TabularInline):
 	model=CategoryType
 	extra=1
 
+class UnitOfMeasureConversionInLine(admin.TabularInline):
+	model=UnitOfMeasureConversion
+	extra=1
+	fk_name='convertFrom'
+
 class ServiceAdmin( admin.ModelAdmin):
 	inlines=[ CategoryInLine, FeatureApplicabilityInLine]
 
@@ -43,11 +48,16 @@ class CategoryTypeAdmin( admin.ModelAdmin):
 class FeatureAdmin( admin.ModelAdmin):
 	inlines=[ FeatureInteractionOfInLine, FeatureInteractionFactorInInLine]
 
+class UnitOfMeasureAdmin( admin.ModelAdmin):
+	inlines=[ UnitOfMeasureConversionInLine ]
+
 admin.site.register( Service, ServiceAdmin)
 admin.site.register( Good, GoodAdmin )
 admin.site.register( CategoryType, CategoryTypeAdmin )
 admin.site.register( Feature,  FeatureAdmin)
 admin.site.register( IdentificationType )
 admin.site.register( FeatureCategory )
-admin.site.register( FeatureType )
 admin.site.register( FeatureInteraction )
+admin.site.register( Dimension )
+admin.site.register( UnitOfMeasure, UnitOfMeasureAdmin )
+admin.site.register( UnitOfMeasureConversion )
