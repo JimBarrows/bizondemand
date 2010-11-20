@@ -1,8 +1,8 @@
 from django.contrib import admin
 from products.models import *
 
-class ProductCategoryInLine(admin.TabularInline):
-	model=ProductCategory
+class CategoryInLine(admin.TabularInline):
+	model=Category
 	extra=1
 
 class IdentificationInLine(admin.TabularInline):
@@ -13,41 +13,41 @@ class MarketInterestInLine(admin.TabularInline):
 	model=MarketInterest
 	extra=1
 
-class ProducFeatureInteractionOfInLine(admin.TabularInline):
-	model=ProductFeatureInteraction
+class FeatureInteractionOfInLine(admin.TabularInline):
+	model=FeatureInteraction
 	fk_name='of'
 	extra=1
 
-class ProducFeatureInteractionFactorInInLine(admin.TabularInline):
-	model=ProductFeatureInteraction
+class FeatureInteractionFactorInInLine(admin.TabularInline):
+	model=FeatureInteraction
 	fk_name='factorIn'
 	extra=1
 
 class FeatureApplicabilityInLine(admin.TabularInline):
-	model=ProductFeatureApplicability
+	model=FeatureApplicability
 	extra=1
 
-class ProductCategoryTypeInLine(admin.TabularInline):
-	model=ProductCategoryType
+class CategoryTypeInLine(admin.TabularInline):
+	model=CategoryType
 	extra=1
 
 class ServiceAdmin( admin.ModelAdmin):
-	inlines=[ ProductCategoryInLine, FeatureApplicabilityInLine]
+	inlines=[ CategoryInLine, FeatureApplicabilityInLine]
 
 class GoodAdmin( admin.ModelAdmin):
-	inlines=[ ProductCategoryInLine, IdentificationInLine,FeatureApplicabilityInLine  ]
+	inlines=[ CategoryInLine, IdentificationInLine,FeatureApplicabilityInLine  ]
 
-class ProductCategoryTypeAdmin( admin.ModelAdmin):
-	inlines=[ MarketInterestInLine, ProductCategoryTypeInLine]
+class CategoryTypeAdmin( admin.ModelAdmin):
+	inlines=[ MarketInterestInLine, CategoryTypeInLine]
 
-class ProductFeatureAdmin( admin.ModelAdmin):
-	inlines=[ ProducFeatureInteractionOfInLine, ProducFeatureInteractionFactorInInLine]
+class FeatureAdmin( admin.ModelAdmin):
+	inlines=[ FeatureInteractionOfInLine, FeatureInteractionFactorInInLine]
 
 admin.site.register( Service, ServiceAdmin)
 admin.site.register( Good, GoodAdmin )
-admin.site.register( ProductCategoryType, ProductCategoryTypeAdmin )
-admin.site.register( ProductFeature,  ProductFeatureAdmin)
+admin.site.register( CategoryType, CategoryTypeAdmin )
+admin.site.register( Feature,  FeatureAdmin)
 admin.site.register( IdentificationType )
-admin.site.register( ProductFeatureCategory )
-admin.site.register( ProductFeatureType )
-admin.site.register( ProductFeatureInteraction )
+admin.site.register( FeatureCategory )
+admin.site.register( FeatureType )
+admin.site.register( FeatureInteraction )
