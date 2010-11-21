@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 from polymorphic import PolymorphicModel
 from party.models import PartyType
 from datetime import datetime
@@ -24,6 +25,63 @@ class Good(Product):
 class Service(Product):
 	def __unicode__(self):
 		return self.name
+
+class PriceComponent( PolymorphicModel):
+	fromDate = models.DateField()
+	thruDate = models.DateField(blank=True, null=True)
+	comment = models.TextField(blank=True, null=True)
+	geographicBoundary = models.ForeignKey(GeographicBoundary, blank=True, null=True)
+	partyType = models.ForeignKey(PartyType, blank=True, null=True)
+	productCategory = models.ForeignKey('CategoryType', blank=True, null=True) 
+	quantityBreak = models.ForeignKey('QuantityBreak', blank=True, null=True)
+	orderValue = models.ForeignKey('OrderValue', blank=True, null=True)
+	salesType = models.ForeignKey('SaleType', blank=True, null=True)
+	pricerOf = models.ForeignKey(Organization)
+	feature = models.ForeignKey('Feature', blank=True, null=True)
+	product = models.ForeignKey('Product')
+	currency = models.ForeignKey('CurrencyMeasure', blank=True, null=True)
+
+class BasePrice( PriceComponent):
+	''' A starting point for figuring out the price. '''
+	price = models.DecimalField( max_digits=8, decimal_places=2)
+
+class DiscountComponent( PriceComponent):
+	''' Discounts that can occur. '''
+	percent = models.IntegerField( validators=[MaxValueValidator(100), MinValueValidator(0)])
+
+class SurchargeComponent( PriceComponent):
+	''' Discounts that can occur. '''
+	price = models.DecimalField( max_digits=8, decimal_places=2)
+	percent = models.IntegerField( validators=[MaxValueValidator(100), MinValueValidator(0)])
+
+class ManufacturerSuggestedPrice( PriceComponent):
+	''' Not necessarily the price being charged. '''
+	price = models.DecimalField( max_digits=8, decimal_places=2)
+
+class OneTimeCharge( PriceComponent):
+	''' Not necessarily the price being charged. '''
+	price = models.DecimalField( max_digits=8, decimal_places=2)
+	percent = models.IntegerField( validators=[MaxValueValidator(100), MinValueValidator(0)])
+
+class RecurringCharge( PriceComponent):
+	per = models.ForeignKey('TimeFrequencyMeasure')
+	price = models.DecimalField( max_digits=8, decimal_places=2)
+
+class UtilizationCharge( PriceComponent):
+	per = models.ForeignKey('UnitOfMeasure')
+	quantity = models.IntegerField()
+	price = models.DecimalField( max_digits=8, decimal_places=2)
+
+class SaleType( models.Model):
+	description = models.CharField(max_length=250)
+
+class OrderValue( models.Model):
+	fromValue = models.DecimalField( max_digits=9, decimal_places=2)
+	thruValue = models.DecimalField( max_digits=9, decimal_places=2)
+
+class QuantityBreak( models.Model):
+	fromQuantity = models.IntegerField()
+	thruQuantity = models.IntegerField()
 
 class InventoryItem( PolymorphicModel ):
 	good = models.ForeignKey('Good') 
@@ -123,11 +181,17 @@ class Dimension( Feature ) :
 	def __unicode__(self):
 		return '{0} {1}'.format( self.numberSpecified, self.measuredUsing.abbreviation)
 
-class UnitOfMeasure( models.Model):
+class UnitOfMeasure( PolymorphicModel):
 	abbreviation = models.CharField(max_length=15)
 	description = models.CharField(max_length=100)
 	def __unicode__(self):
 		return self.abbreviation 
+
+class TimeFrequencyMeasure( UnitOfMeasure):
+	''' another measure '''
+
+class CurrencyMeasure( UnitOfMeasure):
+	''' Currencies '''
 
 class UnitOfMeasureConversion( models.Model):
 	convertFrom = models.ForeignKey('UnitOfMeasure', related_name='convertFrom_set')
