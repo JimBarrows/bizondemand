@@ -44,6 +44,10 @@ class ReorderGuidelineInLine(admin.TabularInline):
 	model=ReorderGuideline
 	extra=1
 
+class InventoryItemVarianceInLine(admin.TabularInline):
+	model=InventoryItemVariance
+	extra=1
+
 class ServiceAdmin( admin.ModelAdmin):
 	inlines=[ CategoryInLine, FeatureApplicabilityInLine, SupplierProductInLine]
 
@@ -59,6 +63,9 @@ class FeatureAdmin( admin.ModelAdmin):
 class UnitOfMeasureAdmin( admin.ModelAdmin):
 	inlines=[ UnitOfMeasureConversionInLine ]
 
+class InventoryItemAdmin( admin.ModelAdmin):
+	inlines=[ InventoryItemVarianceInLine ]
+
 admin.site.register( Service, ServiceAdmin)
 admin.site.register( Good, GoodAdmin )
 admin.site.register( CategoryType, CategoryTypeAdmin )
@@ -69,3 +76,10 @@ admin.site.register( FeatureInteraction )
 admin.site.register( Dimension )
 admin.site.register( UnitOfMeasure, UnitOfMeasureAdmin )
 admin.site.register( UnitOfMeasureConversion )
+admin.site.register( SerializedInventoryItem, InventoryItemAdmin )
+admin.site.register( NonSerializedInventoryItem, InventoryItemAdmin )
+admin.site.register( Reason )
+admin.site.register( ContainerType )
+admin.site.register( Container )
+admin.site.register( Lot )
+admin.site.register( InventoryItemStatusType )

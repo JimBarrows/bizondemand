@@ -5,7 +5,7 @@ from datetime import datetime
 from party.models import Organization, Facility, PartyRole, GeographicBoundary
 
 class Product(PolymorphicModel):
-	name = models.CharField(max_length=128)
+	name = models.CharField(max_length=250)
 	introductionDate = models.DateField(blank=True, null=True)
 	salesDiscontinuationDate = models.DateField(blank=True, null=True)
 	supportDiscontinuationDate = models.DateField(blank=True, null=True)
@@ -24,6 +24,46 @@ class Good(Product):
 class Service(Product):
 	def __unicode__(self):
 		return self.name
+
+class InventoryItem( PolymorphicModel ):
+	good = models.ForeignKey('Good') 
+	status = models.ForeignKey('InventoryItemStatusType') 
+	locatedAt = models.ForeignKey(Facility) 
+	locatedWithin = models.ForeignKey('Container') 
+	lot = models.ForeignKey('Lot') 
+
+class SerializedInventoryItem( InventoryItem):
+	serialNumber = models.CharField(max_length=250)
+
+class NonSerializedInventoryItem( InventoryItem):
+	quantityOnHand = models.IntegerField()
+
+class InventoryItemVariance( models.Model):
+	physicalInventoryDate = models.DateField()
+	quantity = models.IntegerField();
+	comment = models.CharField(max_length=250)
+	reason = models.ForeignKey('Reason') 
+	adjustmentFor = models.ForeignKey('InventoryItem') 
+
+class Reason( models.Model):
+	description = models.CharField(max_length=250)
+
+class Container( models.Model):
+	description = models.CharField(max_length=250)
+	locatedAt = models.ForeignKey(Facility) 
+	kind = models.ForeignKey('ContainerType') 
+	
+class ContainerType( models.Model):
+	description = models.CharField(max_length=250)
+
+class Lot( models.Model):
+	description = models.CharField(max_length=250)
+	quantity = models.IntegerField()
+	creationDate = models.DateField(default = datetime.today())
+	expirationDate = models.DateField(blank=True, null=True)
+
+class InventoryItemStatusType( models.Model):
+	description = models.CharField(max_length=250)
 
 class ReorderGuideline( models.Model):
 	guidelineFor = models.ForeignKey('Good')
